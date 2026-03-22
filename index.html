@@ -38,11 +38,9 @@
       opacity: 0.5; pointer-events: none; z-index: 0;
     }
 
-    .wrapper {
-      position: relative; z-index: 1;
-      max-width: 680px; margin: 0 auto;
-    }
+    .wrapper { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
 
+    /* ── HEADER ── */
     .header { margin-bottom: 2.5rem; animation: fadeDown 0.5s ease both; }
 
     @keyframes fadeDown {
@@ -65,11 +63,18 @@
     }
 
     .ai-badge {
-      font-size: 0.7rem; font-weight: 700;
-      background: #f55036; color: white;
-      padding: 0.2rem 0.6rem; border-radius: 99px;
-      letter-spacing: 0.05em;
+      font-size: 0.7rem; font-weight: 700; background: #f55036; color: white;
+      padding: 0.2rem 0.6rem; border-radius: 99px; letter-spacing: 0.05em;
     }
+
+    .history-nav-btn {
+      margin-left: auto;
+      background: var(--ink); border: 2px solid var(--ink);
+      color: var(--bg); font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem; font-weight: 700; padding: 0.3rem 0.85rem;
+      cursor: pointer; transition: all 0.12s; border-radius: 2px;
+    }
+    .history-nav-btn:hover { background: var(--accent); border-color: var(--accent); }
 
     h1 {
       font-family: 'Bebas Neue', sans-serif;
@@ -77,15 +82,13 @@
       line-height: 0.95; letter-spacing: 0.02em; color: var(--ink);
     }
     h1 span { color: var(--accent); }
-
     .header-sub { font-size: 0.95rem; color: var(--muted); margin-top: 0.6rem; max-width: 420px; line-height: 1.5; }
 
-    /* ── API KEY NOTICE ── */
+    /* ── API NOTICE ── */
     .api-notice {
       background: #fff8e1; border: 2px solid var(--accent2);
       box-shadow: var(--shadow-sm); padding: 1rem 1.2rem;
-      margin-bottom: 1.5rem; display: none;
-      gap: 0.75rem; align-items: flex-start;
+      margin-bottom: 1.5rem; display: none; gap: 0.75rem; align-items: flex-start;
     }
     .api-notice.show { display: flex; }
     .api-notice-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
@@ -93,37 +96,25 @@
     .api-notice-text strong { display: block; margin-bottom: 0.2rem; font-size: 0.9rem; }
     .api-notice-text a { color: var(--accent); font-weight: 700; text-decoration: none; }
     .api-notice-text a:hover { text-decoration: underline; }
-
     .api-key-row { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
-
     .api-key-input {
       flex: 1; background: white; border: 2px solid var(--border);
       color: var(--ink); font-family: monospace; font-size: 0.8rem;
       padding: 0.5rem 0.75rem; outline: none; min-width: 0;
     }
     .api-key-input:focus { border-color: var(--ink); }
-
     .api-key-save {
-      background: var(--ink); border: 2px solid var(--ink);
-      color: var(--bg); font-family: 'DM Sans', sans-serif;
-      font-size: 0.8rem; font-weight: 700;
+      background: var(--ink); border: 2px solid var(--ink); color: var(--bg);
+      font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 700;
       padding: 0.5rem 1rem; cursor: pointer; white-space: nowrap; transition: all 0.12s;
     }
     .api-key-save:hover { background: var(--accent); border-color: var(--accent); }
 
-    .change-key-btn {
-      background: transparent; border: none;
-      color: var(--muted); font-size: 0.72rem; font-family: 'DM Sans', sans-serif;
-      cursor: pointer; text-decoration: underline; padding: 0;
-      display: block; margin-top: 0.6rem;
-    }
-    .change-key-btn:hover { color: var(--ink); }
-
     /* ── INPUT CARD ── */
     .input-card {
       background: var(--surface); border: 2px solid var(--ink);
-      box-shadow: var(--shadow); padding: 1.5rem;
-      margin-bottom: 2rem; animation: fadeUp 0.5s ease 0.1s both;
+      box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 2rem;
+      animation: fadeUp 0.5s ease 0.1s both;
     }
 
     @keyframes fadeUp {
@@ -133,8 +124,7 @@
 
     .input-label {
       font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--muted);
-      margin-bottom: 0.6rem; display: block;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; display: block;
     }
 
     .topic-input {
@@ -157,8 +147,10 @@
     .platform-pill:hover { border-color: var(--ink); color: var(--ink); }
     .platform-pill.active { background: var(--ink); border-color: var(--ink); color: var(--bg); }
 
+    .btn-row { display: flex; gap: 0.75rem; }
+
     .generate-btn {
-      width: 100%; background: var(--accent); border: 2px solid var(--ink);
+      flex: 1; background: var(--accent); border: 2px solid var(--ink);
       box-shadow: var(--shadow); color: white;
       font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem;
       letter-spacing: 0.1em; padding: 0.75rem; cursor: pointer;
@@ -167,6 +159,29 @@
     .generate-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--ink); }
     .generate-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0px var(--ink); }
     .generate-btn:disabled { background: var(--muted); cursor: not-allowed; transform: none; box-shadow: var(--shadow); }
+
+    .refresh-btn {
+      background: var(--surface); border: 2px solid var(--ink);
+      box-shadow: var(--shadow); color: var(--ink);
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem;
+      letter-spacing: 0.05em; padding: 0.75rem 1.1rem; cursor: pointer;
+      transition: all 0.12s; display: none; align-items: center; justify-content: center;
+    }
+    .refresh-btn.visible { display: flex; }
+    .refresh-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--ink); }
+    .refresh-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0px var(--ink); }
+    .refresh-btn:disabled { color: var(--muted); cursor: not-allowed; transform: none; box-shadow: var(--shadow); }
+
+    .spinning { animation: spin 0.7s linear infinite; display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .change-key-btn {
+      background: transparent; border: none; color: var(--muted);
+      font-size: 0.72rem; font-family: 'DM Sans', sans-serif;
+      cursor: pointer; text-decoration: underline; padding: 0;
+      display: block; margin-top: 0.6rem;
+    }
+    .change-key-btn:hover { color: var(--ink); }
 
     /* ── HOOKS ── */
     .hooks-section { display: none; flex-direction: column; gap: 1rem; }
@@ -182,8 +197,7 @@
     .hook-card {
       background: var(--surface); border: 2px solid var(--ink);
       box-shadow: var(--shadow); padding: 1.2rem 1.2rem 1rem;
-      transition: transform 0.12s, box-shadow 0.12s;
-      animation: fadeUp 0.4s ease both;
+      transition: transform 0.12s, box-shadow 0.12s; animation: fadeUp 0.4s ease both;
     }
     .hook-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--ink); }
     .hook-card:nth-child(2) { animation-delay: 0.06s; }
@@ -192,12 +206,12 @@
     .hook-card:nth-child(5) { animation-delay: 0.24s; }
     .hook-card:nth-child(6) { animation-delay: 0.30s; }
 
-    .hook-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+    .hook-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; gap: 0.5rem; }
 
     .hook-type {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      color: white; font-size: 0.65rem; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase; padding: 0.25rem 0.6rem;
+      display: inline-flex; align-items: center; gap: 0.4rem; color: white;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 0.25rem 0.6rem; flex-shrink: 0;
     }
     .hook-type.shock     { background: #e74c3c; }
     .hook-type.question  { background: #2980b9; }
@@ -205,7 +219,9 @@
     .hook-type.bold      { background: #e67e22; }
     .hook-type.curiosity { background: #27ae60; }
 
-    .copy-btn {
+    .hook-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+
+    .copy-btn, .save-btn {
       background: transparent; border: 1.5px solid var(--border);
       color: var(--muted); font-family: 'DM Sans', sans-serif;
       font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.65rem;
@@ -214,23 +230,132 @@
     .copy-btn:hover { background: var(--ink); border-color: var(--ink); color: var(--bg); }
     .copy-btn.copied { background: var(--accent3); border-color: var(--accent3); color: white; }
 
+    .save-btn:hover { background: var(--accent2); border-color: var(--accent2); color: var(--ink); }
+    .save-btn.saved { background: var(--accent2); border-color: var(--accent2); color: var(--ink); }
+
     .hook-text { font-size: 1rem; font-weight: 500; line-height: 1.6; color: var(--ink); }
 
+    /* shimmer */
     .shimmer {
       background: linear-gradient(90deg, var(--border) 25%, var(--bg) 50%, var(--border) 75%);
       background-size: 200% 100%; animation: shimmer 1s infinite;
       height: 1em; border-radius: 2px; margin-bottom: 0.5rem;
     }
-    @keyframes shimmer {
-      from { background-position: 200% 0; }
-      to   { background-position: -200% 0; }
-    }
+    @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
     .error-card {
-      background: #fff0f0; border: 2px solid #e74c3c;
-      padding: 1rem 1.2rem; font-size: 0.88rem; line-height: 1.6;
-      color: #c0392b; box-shadow: var(--shadow-sm);
+      background: #fff0f0; border: 2px solid #e74c3c; box-shadow: var(--shadow-sm);
+      padding: 1rem 1.2rem; font-size: 0.88rem; line-height: 1.6; color: #c0392b;
     }
+
+    /* ── HISTORY PANEL ── */
+    .history-panel {
+      display: none; flex-direction: column; gap: 1.25rem;
+      animation: fadeUp 0.4s ease both;
+    }
+    .history-panel.visible { display: flex; }
+
+    .history-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+
+    .history-title {
+      font-family: 'Bebas Neue', sans-serif; font-size: 2rem;
+      letter-spacing: 0.05em; color: var(--ink);
+    }
+
+    .back-btn {
+      background: transparent; border: 2px solid var(--ink); color: var(--ink);
+      font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 700;
+      padding: 0.4rem 0.9rem; cursor: pointer; transition: all 0.12s; border-radius: 2px;
+    }
+    .back-btn:hover { background: var(--ink); color: var(--bg); }
+
+    .history-stats {
+      display: flex; gap: 0.75rem;
+    }
+
+    .hstat {
+      flex: 1; background: var(--surface); border: 2px solid var(--ink);
+      box-shadow: var(--shadow-sm); padding: 0.8rem; text-align: center;
+    }
+
+    .hstat-num {
+      font-family: 'Bebas Neue', sans-serif; font-size: 2rem;
+      color: var(--accent); line-height: 1;
+    }
+
+    .hstat-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-top: 0.2rem;
+    }
+
+    .history-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .history-empty {
+      text-align: center; padding: 2.5rem 1rem;
+      background: var(--surface); border: 2px dashed var(--border);
+      color: var(--muted); font-size: 0.88rem; line-height: 1.6;
+    }
+
+    .saved-hook-card {
+      background: var(--surface); border: 2px solid var(--ink);
+      box-shadow: var(--shadow-sm); padding: 1rem 1.1rem;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    .saved-hook-top {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.5rem; margin-bottom: 0.6rem;
+    }
+
+    .saved-hook-meta {
+      display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; flex: 1;
+    }
+
+    .saved-hook-topic {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted);
+      background: var(--bg); border: 1.5px solid var(--border);
+      padding: 0.15rem 0.5rem; border-radius: 2px;
+    }
+
+    .saved-hook-platform {
+      font-size: 0.68rem; font-weight: 700; color: var(--muted);
+    }
+
+    .saved-hook-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+
+    .copy-saved-btn, .delete-btn {
+      background: transparent; border: 1.5px solid var(--border);
+      color: var(--muted); font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.55rem;
+      cursor: pointer; transition: all 0.12s; border-radius: 2px;
+    }
+    .copy-saved-btn:hover { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+    .copy-saved-btn.copied { background: var(--accent3); border-color: var(--accent3); color: white; }
+    .delete-btn:hover { background: #e74c3c; border-color: #e74c3c; color: white; }
+
+    .saved-hook-type {
+      display: inline-flex; align-items: center; gap: 0.3rem; color: white;
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 0.2rem 0.5rem; margin-bottom: 0.5rem;
+    }
+    .saved-hook-type.shock     { background: #e74c3c; }
+    .saved-hook-type.question  { background: #2980b9; }
+    .saved-hook-type.story     { background: #8e44ad; }
+    .saved-hook-type.bold      { background: #e67e22; }
+    .saved-hook-type.curiosity { background: #27ae60; }
+
+    .saved-hook-text { font-size: 0.95rem; font-weight: 500; line-height: 1.55; color: var(--ink); }
+
+    .clear-history-btn {
+      background: transparent; border: 2px solid var(--border); color: var(--muted);
+      font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700;
+      padding: 0.5rem 1rem; cursor: pointer; transition: all 0.12s;
+      align-self: center; border-radius: 2px;
+    }
+    .clear-history-btn:hover { border-color: #e74c3c; color: #e74c3c; }
 
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
@@ -245,16 +370,19 @@
 <body>
 <div class="wrapper">
 
+  <!-- HEADER -->
   <div class="header">
     <div class="logo-row">
       <div class="logo-badge">🧲 Hook Lab</div>
-      <div class="logo-version">v0.2</div>
+      <div class="logo-version">v0.3</div>
       <div class="ai-badge">⚡ Groq AI — Free</div>
+      <button class="history-nav-btn" id="history-nav-btn">📌 Saved Hooks</button>
     </div>
     <h1>STOP THE<br><span>SCROLL.</span></h1>
     <p class="header-sub">Enter your content topic and get 5 unique AI-generated scroll-stopping hooks — tailored to your platform.</p>
   </div>
 
+  <!-- API KEY NOTICE -->
   <div class="api-notice" id="api-notice">
     <div class="api-notice-icon">🔑</div>
     <div class="api-notice-text">
@@ -267,32 +395,62 @@
     </div>
   </div>
 
-  <div class="input-card">
-    <label class="input-label" for="topic-input">Your content topic</label>
-    <input
-      type="text" id="topic-input" class="topic-input"
-      placeholder="e.g. how to wake up at 5am, budget travel India, gym for beginners…"
-      maxlength="150"
-    />
+  <!-- MAIN VIEW -->
+  <div id="main-view">
+    <div class="input-card">
+      <label class="input-label" for="topic-input">Your content topic</label>
+      <input type="text" id="topic-input" class="topic-input"
+        placeholder="e.g. how to wake up at 5am, budget travel India, gym for beginners…"
+        maxlength="150"/>
 
-    <label class="input-label">Platform</label>
-    <div class="platform-row">
-      <button class="platform-pill active" data-platform="YouTube">▶ YouTube</button>
-      <button class="platform-pill" data-platform="Instagram">◈ Instagram</button>
-      <button class="platform-pill" data-platform="Twitter / X">✦ Twitter / X</button>
-      <button class="platform-pill" data-platform="LinkedIn">◉ LinkedIn</button>
+      <label class="input-label">Platform</label>
+      <div class="platform-row">
+        <button class="platform-pill active" data-platform="YouTube">▶ YouTube</button>
+        <button class="platform-pill" data-platform="Instagram">◈ Instagram</button>
+        <button class="platform-pill" data-platform="Twitter / X">✦ Twitter / X</button>
+        <button class="platform-pill" data-platform="LinkedIn">◉ LinkedIn</button>
+      </div>
+
+      <div class="btn-row">
+        <button class="generate-btn" id="generate-btn">🧲 GENERATE HOOKS</button>
+        <button class="refresh-btn" id="refresh-btn" title="Regenerate hooks">↻</button>
+      </div>
+      <button class="change-key-btn" id="change-key-btn">🔑 Change Groq API key</button>
     </div>
 
-    <button class="generate-btn" id="generate-btn">🧲 GENERATE HOOKS</button>
-    <button class="change-key-btn" id="change-key-btn">🔑 Change Groq API key</button>
+    <div class="hooks-section" id="hooks-section">
+      <div class="section-label">5 AI hooks — powered by Groq ⚡</div>
+      <div id="hooks-container"></div>
+    </div>
   </div>
 
-  <div class="hooks-section" id="hooks-section">
-    <div class="section-label">5 AI hooks — powered by Groq ⚡</div>
-    <div id="hooks-container"></div>
+  <!-- HISTORY PANEL -->
+  <div class="history-panel" id="history-panel">
+    <div class="history-top">
+      <div class="history-title">📌 Saved Hooks</div>
+      <button class="back-btn" id="back-btn">← Back</button>
+    </div>
+
+    <div class="history-stats">
+      <div class="hstat">
+        <div class="hstat-num" id="hstat-total">0</div>
+        <div class="hstat-label">Saved</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-num" id="hstat-topics">0</div>
+        <div class="hstat-label">Topics</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-num" id="hstat-platforms">0</div>
+        <div class="hstat-label">Platforms</div>
+      </div>
+    </div>
+
+    <div class="history-list" id="history-list"></div>
+    <button class="clear-history-btn" id="clear-history-btn">🗑 Clear all saved hooks</button>
   </div>
 
-  <div class="footer">Hook Lab v0.2 · Groq AI ⚡ · kaifislam02-ops.github.io/HookLab 🔥</div>
+  <div class="footer">Hook Lab v0.3 · Groq AI ⚡ · kaifislam02-ops.github.io/HookLab 🔥</div>
 </div>
 
 <script>
@@ -307,6 +465,32 @@
   ];
 
   let selectedPlatform = 'YouTube';
+  let lastTopic = '';
+  let isGenerating = false;
+
+  // ── STORAGE ──
+  function getSavedHooks() {
+    try { return JSON.parse(localStorage.getItem('hooklab_saved') || '[]'); }
+    catch { return []; }
+  }
+
+  function saveHook(hook) {
+    const saved = getSavedHooks();
+    // avoid exact duplicates
+    if (saved.find(h => h.text === hook.text)) return false;
+    saved.unshift(hook);
+    localStorage.setItem('hooklab_saved', JSON.stringify(saved));
+    return true;
+  }
+
+  function deleteHook(id) {
+    const saved = getSavedHooks().filter(h => h.id !== id);
+    localStorage.setItem('hooklab_saved', JSON.stringify(saved));
+  }
+
+  function clearAllHooks() {
+    localStorage.removeItem('hooklab_saved');
+  }
 
   // ── API KEY ──
   function getApiKey() { return localStorage.getItem('hooklab_groq_key') || ''; }
@@ -342,17 +526,35 @@
     });
   });
 
+  // ── NAVIGATION ──
+  const mainView     = document.getElementById('main-view');
+  const historyPanel = document.getElementById('history-panel');
+
+  document.getElementById('history-nav-btn').addEventListener('click', () => {
+    renderHistoryPanel();
+    mainView.style.display = 'none';
+    historyPanel.classList.add('visible');
+  });
+
+  document.getElementById('back-btn').addEventListener('click', () => {
+    historyPanel.classList.remove('visible');
+    mainView.style.display = 'block';
+  });
+
   // ── GENERATE ──
   const generateBtn    = document.getElementById('generate-btn');
+  const refreshBtn     = document.getElementById('refresh-btn');
   const topicInput     = document.getElementById('topic-input');
   const hooksSection   = document.getElementById('hooks-section');
   const hooksContainer = document.getElementById('hooks-container');
 
-  generateBtn.addEventListener('click', generateHooks);
-  topicInput.addEventListener('keydown', e => { if (e.key === 'Enter') generateHooks(); });
+  generateBtn.addEventListener('click', () => generateHooks(false));
+  refreshBtn.addEventListener('click',  () => generateHooks(true));
+  topicInput.addEventListener('keydown', e => { if (e.key === 'Enter') generateHooks(false); });
 
-  async function generateHooks() {
-    const topic = topicInput.value.trim();
+  async function generateHooks(isRefresh) {
+    const topic = isRefresh ? lastTopic : topicInput.value.trim();
+
     if (!topic) {
       topicInput.classList.add('shake');
       topicInput.focus();
@@ -367,9 +569,21 @@
       return;
     }
 
-    // Show shimmer
+    if (isGenerating) return;
+    isGenerating = true;
+    lastTopic = topic;
+
+    // UI: loading state
     generateBtn.disabled = true;
-    generateBtn.innerHTML = '⚡ GROQ IS THINKING...';
+    refreshBtn.disabled  = true;
+
+    if (isRefresh) {
+      const icon = refreshBtn.querySelector('span') || refreshBtn;
+      refreshBtn.innerHTML = '<span class="spinning">↻</span>';
+    } else {
+      generateBtn.innerHTML = '⚡ GROQ IS THINKING...';
+    }
+
     hooksSection.classList.add('visible');
     hooksContainer.innerHTML = `
       <div style="display:flex;flex-direction:column;gap:1rem;">
@@ -407,6 +621,7 @@ Rules:
 - Be SPECIFIC to the topic, never generic
 - No quotation marks around hooks
 - No numbering or labels
+- Make them feel fresh and different from each other
 
 Return ONLY this JSON, nothing else before or after:
 {
@@ -427,13 +642,10 @@ Return ONLY this JSON, nothing else before or after:
         },
         body: JSON.stringify({
           model: 'llama-3.3-70b-versatile',
-          temperature: 0.85,
+          temperature: 0.9,
           max_tokens: 800,
           messages: [
-            {
-              role: 'system',
-              content: 'You are a viral content hook writer. Always respond with valid JSON only — no markdown, no explanation, just the raw JSON object.'
-            },
+            { role: 'system', content: 'You are a viral content hook writer. Always respond with valid JSON only — no markdown, no explanation, just the raw JSON object.' },
             { role: 'user', content: prompt }
           ]
         })
@@ -452,16 +664,17 @@ Return ONLY this JSON, nothing else before or after:
       if (!jsonMatch) throw new Error('Could not parse AI response. Try again!');
       const hooks = JSON.parse(jsonMatch[0]);
 
-      renderHooks(hooks);
+      renderHooks(hooks, topic);
+      refreshBtn.classList.add('visible');
 
     } catch (err) {
       let hint = '';
       if (err.message.includes('401') || err.message.includes('invalid_api_key'))
-        hint = '🔑 Your API key looks wrong. Get a fresh one at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a>';
+        hint = '🔑 Your API key looks wrong. Get a new one at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a>';
       else if (err.message.includes('429'))
         hint = '⏳ Rate limit hit — wait a moment and try again.';
-      else if (err.message.includes('fetch') || err.message.includes('network') || err.message.includes('Failed'))
-        hint = '🌐 Make sure you are visiting the live GitHub Pages site, not opening the file locally from your computer.';
+      else if (err.message.includes('fetch') || err.message.includes('Failed'))
+        hint = '🌐 Make sure you are using the live GitHub Pages URL, not opening the file locally.';
 
       hooksContainer.innerHTML = `
         <div class="error-card">
@@ -469,12 +682,16 @@ Return ONLY this JSON, nothing else before or after:
           ${hint ? `<br><br>${hint}` : ''}
         </div>`;
     } finally {
+      isGenerating = false;
       generateBtn.disabled = false;
+      refreshBtn.disabled  = false;
       generateBtn.innerHTML = '🧲 GENERATE HOOKS';
+      refreshBtn.innerHTML  = '↻';
     }
   }
 
-  function renderHooks(hooks) {
+  // ── RENDER HOOKS ──
+  function renderHooks(hooks, topic) {
     hooksContainer.innerHTML = '';
     const frag = document.createDocumentFragment();
 
@@ -486,29 +703,134 @@ Return ONLY this JSON, nothing else before or after:
       card.innerHTML = `
         <div class="hook-top">
           <span class="hook-type ${type.cls}">${type.label}</span>
-          <button class="copy-btn">Copy</button>
+          <div class="hook-actions">
+            <button class="save-btn" title="Save this hook">📌 Save</button>
+            <button class="copy-btn">Copy</button>
+          </div>
         </div>
         <div class="hook-text">${text}</div>
       `;
+
+      // Save button
+      card.querySelector('.save-btn').addEventListener('click', function() {
+        const hookText = card.querySelector('.hook-text').textContent;
+        const saved = saveHook({
+          id: Date.now() + Math.random(),
+          text: hookText,
+          type: type.key,
+          typeLabel: type.label,
+          typeCls: type.cls,
+          topic,
+          platform: selectedPlatform,
+          savedAt: Date.now()
+        });
+
+        if (saved) {
+          this.textContent = '✅ Saved!';
+          this.classList.add('saved');
+          setTimeout(() => { this.textContent = '📌 Save'; this.classList.remove('saved'); }, 2000);
+        } else {
+          this.textContent = 'Already saved';
+          setTimeout(() => { this.textContent = '📌 Save'; }, 2000);
+        }
+      });
+
+      // Copy button
+      card.querySelector('.copy-btn').addEventListener('click', function() {
+        const text = card.querySelector('.hook-text').textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          this.textContent = '✓ Copied!';
+          this.classList.add('copied');
+          setTimeout(() => { this.textContent = 'Copy'; this.classList.remove('copied'); }, 2000);
+        });
+      });
+
       frag.appendChild(card);
     });
 
     hooksContainer.appendChild(frag);
+  }
 
-    hooksContainer.querySelectorAll('.copy-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const text = btn.closest('.hook-card').querySelector('.hook-text').textContent;
-        navigator.clipboard.writeText(text).then(() => {
-          btn.textContent = '✓ Copied!';
-          btn.classList.add('copied');
-          setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  // ── HISTORY PANEL ──
+  function renderHistoryPanel() {
+    const saved = getSavedHooks();
+    const topics    = new Set(saved.map(h => h.topic)).size;
+    const platforms = new Set(saved.map(h => h.platform)).size;
+
+    document.getElementById('hstat-total').textContent     = saved.length;
+    document.getElementById('hstat-topics').textContent    = topics;
+    document.getElementById('hstat-platforms').textContent = platforms;
+
+    const list = document.getElementById('history-list');
+
+    if (!saved.length) {
+      list.innerHTML = `
+        <div class="history-empty">
+          No saved hooks yet!<br>
+          Generate some hooks and hit <strong>📌 Save</strong> on your favourites.
+        </div>`;
+      return;
+    }
+
+    list.innerHTML = '';
+    const frag = document.createDocumentFragment();
+
+    saved.forEach((h, i) => {
+      const card = document.createElement('div');
+      card.className = 'saved-hook-card';
+      card.style.animationDelay = `${i * 0.05}s`;
+      card.dataset.id = h.id;
+
+      const date = new Date(h.savedAt);
+      const dateStr = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+
+      card.innerHTML = `
+        <div class="saved-hook-top">
+          <div class="saved-hook-meta">
+            <span class="saved-hook-topic">${h.topic}</span>
+            <span class="saved-hook-platform">${h.platform} · ${dateStr}</span>
+          </div>
+          <div class="saved-hook-actions">
+            <button class="copy-saved-btn">Copy</button>
+            <button class="delete-btn">✕</button>
+          </div>
+        </div>
+        <div class="saved-hook-type ${h.typeCls}">${h.typeLabel}</div>
+        <div class="saved-hook-text">${h.text}</div>
+      `;
+
+      card.querySelector('.copy-saved-btn').addEventListener('click', function() {
+        navigator.clipboard.writeText(h.text).then(() => {
+          this.textContent = '✓ Copied!';
+          this.classList.add('copied');
+          setTimeout(() => { this.textContent = 'Copy'; this.classList.remove('copied'); }, 2000);
         });
       });
+
+      card.querySelector('.delete-btn').addEventListener('click', function() {
+        deleteHook(h.id);
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.95)';
+        card.style.transition = 'all 0.2s ease';
+        setTimeout(() => { card.remove(); renderHistoryPanel(); }, 200);
+      });
+
+      frag.appendChild(card);
     });
+
+    list.appendChild(frag);
   }
+
+  document.getElementById('clear-history-btn').addEventListener('click', () => {
+    if (confirm('Clear all saved hooks? This cannot be undone.')) {
+      clearAllHooks();
+      renderHistoryPanel();
+    }
+  });
 
   // ── INIT ──
   checkApiKey();
 </script>
 </body>
 </html>
+
