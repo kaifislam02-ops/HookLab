@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🧲 Hook Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f0e8;
+      --surface: #ffffff;
+      --border: #e0d8cc;
+      --ink: #1a1208;
+      --muted: #9a9080;
+      --accent: #ff3d00;
+      --accent2: #ffb300;
+      --accent3: #00b894;
+      --shadow: 4px 4px 0px #1a1208;
+      --shadow-sm: 2px 2px 0px #1a1208;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      padding: 2rem 1rem 4rem;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(circle, #c8bfb0 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.5; pointer-events: none; z-index: 0;
+    }
+
+    .wrapper {
+      position: relative; z-index: 1;
+      max-width: 680px; margin: 0 auto;
+    }
+
+    .header { margin-bottom: 2.5rem; animation: fadeDown 0.5s ease both; }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+
+    .logo-badge {
+      background: var(--accent); color: white;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1rem;
+      letter-spacing: 0.1em; padding: 0.25rem 0.75rem;
+      border: 2px solid var(--ink); box-shadow: var(--shadow-sm);
+    }
+
+    .logo-version {
+      font-size: 0.7rem; color: var(--muted);
+      border: 1.5px solid var(--border); padding: 0.2rem 0.5rem; border-radius: 99px;
+    }
+
+    .ai-badge {
+      font-size: 0.7rem; font-weight: 700;
+      background: #f55036; color: white;
+      padding: 0.2rem 0.6rem; border-radius: 99px;
+      letter-spacing: 0.05em;
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 8vw, 5rem);
+      line-height: 0.95; letter-spacing: 0.02em; color: var(--ink);
+    }
+    h1 span { color: var(--accent); }
+
+    .header-sub { font-size: 0.95rem; color: var(--muted); margin-top: 0.6rem; max-width: 420px; line-height: 1.5; }
+
+    /* ── API KEY NOTICE ── */
+    .api-notice {
+      background: #fff8e1; border: 2px solid var(--accent2);
+      box-shadow: var(--shadow-sm); padding: 1rem 1.2rem;
+      margin-bottom: 1.5rem; display: none;
+      gap: 0.75rem; align-items: flex-start;
+    }
+    .api-notice.show { display: flex; }
+    .api-notice-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .api-notice-text { font-size: 0.85rem; line-height: 1.6; width: 100%; }
+    .api-notice-text strong { display: block; margin-bottom: 0.2rem; font-size: 0.9rem; }
+    .api-notice-text a { color: var(--accent); font-weight: 700; text-decoration: none; }
+    .api-notice-text a:hover { text-decoration: underline; }
+
+    .api-key-row { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+
+    .api-key-input {
+      flex: 1; background: white; border: 2px solid var(--border);
+      color: var(--ink); font-family: monospace; font-size: 0.8rem;
+      padding: 0.5rem 0.75rem; outline: none; min-width: 0;
+    }
+    .api-key-input:focus { border-color: var(--ink); }
+
+    .api-key-save {
+      background: var(--ink); border: 2px solid var(--ink);
+      color: var(--bg); font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem; font-weight: 700;
+      padding: 0.5rem 1rem; cursor: pointer; white-space: nowrap; transition: all 0.12s;
+    }
+    .api-key-save:hover { background: var(--accent); border-color: var(--accent); }
+
+    .change-key-btn {
+      background: transparent; border: none;
+      color: var(--muted); font-size: 0.72rem; font-family: 'DM Sans', sans-serif;
+      cursor: pointer; text-decoration: underline; padding: 0;
+      display: block; margin-top: 0.6rem;
+    }
+    .change-key-btn:hover { color: var(--ink); }
+
+    /* ── INPUT CARD ── */
+    .input-card {
+      background: var(--surface); border: 2px solid var(--ink);
+      box-shadow: var(--shadow); padding: 1.5rem;
+      margin-bottom: 2rem; animation: fadeUp 0.5s ease 0.1s both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .input-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 0.6rem; display: block;
+    }
+
+    .topic-input {
+      width: 100%; background: var(--bg); border: 2px solid var(--border);
+      color: var(--ink); font-family: 'DM Sans', sans-serif;
+      font-size: 1.05rem; font-weight: 500; padding: 0.85rem 1rem;
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s; margin-bottom: 1rem;
+    }
+    .topic-input::placeholder { color: var(--muted); font-weight: 400; }
+    .topic-input:focus { border-color: var(--ink); box-shadow: var(--shadow-sm); }
+
+    .platform-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+
+    .platform-pill {
+      background: var(--bg); border: 2px solid var(--border);
+      color: var(--muted); font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem; font-weight: 700; padding: 0.35rem 0.85rem;
+      cursor: pointer; transition: all 0.12s; border-radius: 2px;
+    }
+    .platform-pill:hover { border-color: var(--ink); color: var(--ink); }
+    .platform-pill.active { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+
+    .generate-btn {
+      width: 100%; background: var(--accent); border: 2px solid var(--ink);
+      box-shadow: var(--shadow); color: white;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem;
+      letter-spacing: 0.1em; padding: 0.75rem; cursor: pointer;
+      transition: all 0.12s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .generate-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--ink); }
+    .generate-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0px var(--ink); }
+    .generate-btn:disabled { background: var(--muted); cursor: not-allowed; transform: none; box-shadow: var(--shadow); }
+
+    /* ── HOOKS ── */
+    .hooks-section { display: none; flex-direction: column; gap: 1rem; }
+    .hooks-section.visible { display: flex; }
+
+    .section-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .hook-card {
+      background: var(--surface); border: 2px solid var(--ink);
+      box-shadow: var(--shadow); padding: 1.2rem 1.2rem 1rem;
+      transition: transform 0.12s, box-shadow 0.12s;
+      animation: fadeUp 0.4s ease both;
+    }
+    .hook-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--ink); }
+    .hook-card:nth-child(2) { animation-delay: 0.06s; }
+    .hook-card:nth-child(3) { animation-delay: 0.12s; }
+    .hook-card:nth-child(4) { animation-delay: 0.18s; }
+    .hook-card:nth-child(5) { animation-delay: 0.24s; }
+    .hook-card:nth-child(6) { animation-delay: 0.30s; }
+
+    .hook-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+
+    .hook-type {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: white; font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; padding: 0.25rem 0.6rem;
+    }
+    .hook-type.shock     { background: #e74c3c; }
+    .hook-type.question  { background: #2980b9; }
+    .hook-type.story     { background: #8e44ad; }
+    .hook-type.bold      { background: #e67e22; }
+    .hook-type.curiosity { background: #27ae60; }
+
+    .copy-btn {
+      background: transparent; border: 1.5px solid var(--border);
+      color: var(--muted); font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.65rem;
+      cursor: pointer; transition: all 0.12s; border-radius: 2px;
+    }
+    .copy-btn:hover { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+    .copy-btn.copied { background: var(--accent3); border-color: var(--accent3); color: white; }
+
+    .hook-text { font-size: 1rem; font-weight: 500; line-height: 1.6; color: var(--ink); }
+
+    .shimmer {
+      background: linear-gradient(90deg, var(--border) 25%, var(--bg) 50%, var(--border) 75%);
+      background-size: 200% 100%; animation: shimmer 1s infinite;
+      height: 1em; border-radius: 2px; margin-bottom: 0.5rem;
+    }
+    @keyframes shimmer {
+      from { background-position: 200% 0; }
+      to   { background-position: -200% 0; }
+    }
+
+    .error-card {
+      background: #fff0f0; border: 2px solid #e74c3c;
+      padding: 1rem 1.2rem; font-size: 0.88rem; line-height: 1.6;
+      color: #c0392b; box-shadow: var(--shadow-sm);
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+    .shake { animation: shake 0.3s ease; }
+
+    .footer { text-align: center; margin-top: 3rem; font-size: 0.72rem; color: var(--muted); font-weight: 500; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="logo-row">
+      <div class="logo-badge">🧲 Hook Lab</div>
+      <div class="logo-version">v0.2</div>
+      <div class="ai-badge">⚡ Groq AI — Free</div>
+    </div>
+    <h1>STOP THE<br><span>SCROLL.</span></h1>
+    <p class="header-sub">Enter your content topic and get 5 unique AI-generated scroll-stopping hooks — tailored to your platform.</p>
+  </div>
+
+  <div class="api-notice" id="api-notice">
+    <div class="api-notice-icon">🔑</div>
+    <div class="api-notice-text">
+      <strong>Add your free Groq API key to unlock AI hooks</strong>
+      Get yours free at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> → sign up → Create API Key. Stored only in your browser.
+      <div class="api-key-row">
+        <input class="api-key-input" id="api-key-input" type="password" placeholder="gsk_..." />
+        <button class="api-key-save" id="api-key-save">Save Key</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-card">
+    <label class="input-label" for="topic-input">Your content topic</label>
+    <input
+      type="text" id="topic-input" class="topic-input"
+      placeholder="e.g. how to wake up at 5am, budget travel India, gym for beginners…"
+      maxlength="150"
+    />
+
+    <label class="input-label">Platform</label>
+    <div class="platform-row">
+      <button class="platform-pill active" data-platform="YouTube">▶ YouTube</button>
+      <button class="platform-pill" data-platform="Instagram">◈ Instagram</button>
+      <button class="platform-pill" data-platform="Twitter / X">✦ Twitter / X</button>
+      <button class="platform-pill" data-platform="LinkedIn">◉ LinkedIn</button>
+    </div>
+
+    <button class="generate-btn" id="generate-btn">🧲 GENERATE HOOKS</button>
+    <button class="change-key-btn" id="change-key-btn">🔑 Change Groq API key</button>
+  </div>
+
+  <div class="hooks-section" id="hooks-section">
+    <div class="section-label">5 AI hooks — powered by Groq ⚡</div>
+    <div id="hooks-container"></div>
+  </div>
+
+  <div class="footer">Hook Lab v0.2 · Groq AI ⚡ · kaifislam02-ops.github.io/HookLab 🔥</div>
+</div>
+
+<script>
+  const SITE_ORIGIN = 'https://kaifislam02-ops.github.io';
+
+  const HOOK_TYPES = [
+    { key: 'shock',     label: '🤯 Shock',        cls: 'shock'     },
+    { key: 'question',  label: '❓ Question',      cls: 'question'  },
+    { key: 'story',     label: '📖 Story',         cls: 'story'     },
+    { key: 'bold',      label: '🎯 Bold Claim',    cls: 'bold'      },
+    { key: 'curiosity', label: '👀 Curiosity Gap', cls: 'curiosity' },
+  ];
+
+  let selectedPlatform = 'YouTube';
+
+  // ── API KEY ──
+  function getApiKey() { return localStorage.getItem('hooklab_groq_key') || ''; }
+
+  function checkApiKey() {
+    if (!getApiKey()) document.getElementById('api-notice').classList.add('show');
+  }
+
+  document.getElementById('api-key-save').addEventListener('click', () => {
+    const key = document.getElementById('api-key-input').value.trim();
+    if (!key.startsWith('gsk_')) {
+      alert('That doesn\'t look like a Groq API key — it should start with gsk_\n\nGet yours free at console.groq.com/keys');
+      return;
+    }
+    localStorage.setItem('hooklab_groq_key', key);
+    document.getElementById('api-notice').classList.remove('show');
+    document.getElementById('api-key-input').value = '';
+    alert('✅ Groq key saved! Now generate some hooks.');
+  });
+
+  document.getElementById('change-key-btn').addEventListener('click', () => {
+    document.getElementById('api-notice').classList.add('show');
+    document.getElementById('api-notice').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => document.getElementById('api-key-input').focus(), 300);
+  });
+
+  // ── PLATFORM ──
+  document.querySelectorAll('.platform-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.platform-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      selectedPlatform = pill.dataset.platform;
+    });
+  });
+
+  // ── GENERATE ──
+  const generateBtn    = document.getElementById('generate-btn');
+  const topicInput     = document.getElementById('topic-input');
+  const hooksSection   = document.getElementById('hooks-section');
+  const hooksContainer = document.getElementById('hooks-container');
+
+  generateBtn.addEventListener('click', generateHooks);
+  topicInput.addEventListener('keydown', e => { if (e.key === 'Enter') generateHooks(); });
+
+  async function generateHooks() {
+    const topic = topicInput.value.trim();
+    if (!topic) {
+      topicInput.classList.add('shake');
+      topicInput.focus();
+      setTimeout(() => topicInput.classList.remove('shake'), 400);
+      return;
+    }
+
+    const apiKey = getApiKey();
+    if (!apiKey) {
+      document.getElementById('api-notice').classList.add('show');
+      document.getElementById('api-notice').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    // Show shimmer
+    generateBtn.disabled = true;
+    generateBtn.innerHTML = '⚡ GROQ IS THINKING...';
+    hooksSection.classList.add('visible');
+    hooksContainer.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        ${[1,2,3,4,5].map(() => `
+          <div style="background:white;border:2px solid #1a1208;padding:1.2rem;box-shadow:4px 4px 0 #1a1208;">
+            <div class="shimmer" style="width:28%;margin-bottom:0.75rem;"></div>
+            <div class="shimmer" style="width:100%;"></div>
+            <div class="shimmer" style="width:70%;"></div>
+          </div>`).join('')}
+      </div>`;
+
+    const platformTone = {
+      'YouTube':    'engaging, watch-time optimized, conversational',
+      'Instagram':  'visual, emotional, punchy and personal',
+      'Twitter / X':'concise and punchy, under 280 characters ideally',
+      'LinkedIn':   'professional yet engaging, insight-driven',
+    }[selectedPlatform] || 'engaging';
+
+    const prompt = `You are an expert content creator and viral copywriter.
+
+Generate exactly 5 scroll-stopping hooks for this content topic on ${selectedPlatform}:
+
+TOPIC: "${topic}"
+PLATFORM TONE: ${platformTone}
+
+Write one hook for each style:
+1. SHOCK - A shocking statistic or surprising fact that stops people mid-scroll
+2. QUESTION - A thought-provoking question they absolutely need answered
+3. STORY - A first-person story opener with immediate emotional pull
+4. BOLD - A confident bold statement that challenges conventional wisdom
+5. CURIOSITY - Creates an irresistible information gap they must close
+
+Rules:
+- Each hook = 1-3 sentences max
+- Be SPECIFIC to the topic, never generic
+- No quotation marks around hooks
+- No numbering or labels
+
+Return ONLY this JSON, nothing else before or after:
+{
+  "shock": "...",
+  "question": "...",
+  "story": "...",
+  "bold": "...",
+  "curiosity": "..."
+}`;
+
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+          'Origin': SITE_ORIGIN
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          temperature: 0.85,
+          max_tokens: 800,
+          messages: [
+            {
+              role: 'system',
+              content: 'You are a viral content hook writer. Always respond with valid JSON only — no markdown, no explanation, just the raw JSON object.'
+            },
+            { role: 'user', content: prompt }
+          ]
+        })
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error?.message || `Groq API error ${response.status}`);
+      }
+
+      const data = await response.json();
+      const raw  = data.choices?.[0]?.message?.content?.trim();
+      if (!raw) throw new Error('Empty response from Groq. Please try again.');
+
+      const jsonMatch = raw.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('Could not parse AI response. Try again!');
+      const hooks = JSON.parse(jsonMatch[0]);
+
+      renderHooks(hooks);
+
+    } catch (err) {
+      let hint = '';
+      if (err.message.includes('401') || err.message.includes('invalid_api_key'))
+        hint = '🔑 Your API key looks wrong. Get a fresh one at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a>';
+      else if (err.message.includes('429'))
+        hint = '⏳ Rate limit hit — wait a moment and try again.';
+      else if (err.message.includes('fetch') || err.message.includes('network') || err.message.includes('Failed'))
+        hint = '🌐 Make sure you are visiting the live GitHub Pages site, not opening the file locally from your computer.';
+
+      hooksContainer.innerHTML = `
+        <div class="error-card">
+          ⚠️ <strong>Something went wrong:</strong><br>${err.message}
+          ${hint ? `<br><br>${hint}` : ''}
+        </div>`;
+    } finally {
+      generateBtn.disabled = false;
+      generateBtn.innerHTML = '🧲 GENERATE HOOKS';
+    }
+  }
+
+  function renderHooks(hooks) {
+    hooksContainer.innerHTML = '';
+    const frag = document.createDocumentFragment();
+
+    HOOK_TYPES.forEach((type, i) => {
+      const text = hooks[type.key] || '(Could not generate — try again)';
+      const card = document.createElement('div');
+      card.className = 'hook-card';
+      card.style.animationDelay = `${i * 0.08}s`;
+      card.innerHTML = `
+        <div class="hook-top">
+          <span class="hook-type ${type.cls}">${type.label}</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+        <div class="hook-text">${text}</div>
+      `;
+      frag.appendChild(card);
+    });
+
+    hooksContainer.appendChild(frag);
+
+    hooksContainer.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const text = btn.closest('.hook-card').querySelector('.hook-text').textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          btn.textContent = '✓ Copied!';
+          btn.classList.add('copied');
+          setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+    });
+  }
+
+  // ── INIT ──
+  checkApiKey();
+</script>
+</body>
+</html>
